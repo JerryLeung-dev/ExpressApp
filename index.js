@@ -5,6 +5,10 @@ const port = 3000
 app.set('view engine', 'pug')
 app.set('views', './views')
 
+var users = [
+    {id:1, name: 'Jerry'},
+    {id:2, name: 'Jack'}
+]
 
 
 app.get('/', function (req, res) {
@@ -12,10 +16,18 @@ app.get('/', function (req, res) {
   })
 
 app.get('/users',(req, res)=> res.render('users/index',{
-    users: [
-        {id:1, name: 'Jerry'},
-        {id:2, name: 'Jack'}
-    ]
+    users: users
 }))
+
+app.get('/users/search', (req,res)=>{
+    var q = req.query.q
+    var matchedUsers = users.filter(user => {
+        return user.name.toLowerCase().indexOf(q.toLowerCase()) !== -1
+    })
+    res.render('users/index', {
+        users: matchedUsers,
+        q: q
+    })
+})
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
