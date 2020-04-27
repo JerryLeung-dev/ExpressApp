@@ -5,6 +5,9 @@ const port = 3000
 app.set('view engine', 'pug')
 app.set('views', './views')
 
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
 var users = [
     {id:1, name: 'Jerry'},
     {id:2, name: 'Jack'}
@@ -28,6 +31,13 @@ app.get('/users/search', (req,res)=>{
         users: matchedUsers,
         q: q
     })
+})
+
+app.get('/users/create', (req,res) => res.render('users/create'))
+
+app.post('/users/create', (req,res) => {
+    users.push(req.body);
+    res.redirect('/users')
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
