@@ -1,9 +1,14 @@
- 
+
 h1 Users
+a(href="/users/create") Create new user
 form(action="/users/search", method="GET")
     input(name="q", value=q)
     button Search
 ul 
     each user in users
-        li= user.name 
+        li
+            span= user.name
+            span &nbsp;
+            a(href="/users/create/" + user.id) View
+           
 

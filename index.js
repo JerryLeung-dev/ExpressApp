@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const shortid = require('shortid');
 //database setting
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
@@ -26,8 +27,8 @@ app.get('/users',(req, res)=> res.render('users/index',{
 }))
 
 app.get('/users/search', (req,res)=>{
-    var q = req.query.q
-    var matchedUsers = db.get('users').value().filter(function(user){
+    const q = req.query.q
+    const matchedUsers = db.get('users').value().filter(function(user){
         return user.name.toLowerCase().indexOf(q.toLowerCase()) !== -1
     })
     res.render('users/index', {
@@ -38,7 +39,16 @@ app.get('/users/search', (req,res)=>{
 
 app.get('/users/create', (req,res) => res.render('users/create'))
 
+app.get('/users/create/:id',(req,res)=> {
+    const id = req.params.id
+    const matchedUser = db.get('users').find({id: id}).value()
+    res.render('users/view', {
+        user:matchedUser
+    })
+})
+
 app.post('/users/create', (req,res) => {
+    req.body.id = shortid.generate();
     db.get('users').push(req.body).write();
     res.redirect('/users')
 })
