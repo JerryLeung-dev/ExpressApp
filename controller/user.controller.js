@@ -21,7 +21,7 @@ module.exports.search = (req,res)=>{
 
 module.exports.create =  (req,res) => res.render('users/create')
 
-module.exports.view = (req,res)=> {
+module.exports.get = (req,res)=> {
     const id = req.params.id
     const matchedUser = db.get('users').find({id: id}).value()
     res.render('users/view', {

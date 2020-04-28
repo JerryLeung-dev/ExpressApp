@@ -11,8 +11,10 @@ router.get('/search', controller.search)
 
 router.get('/create', controller.create)
 
-router.get('/create/:id', controller.view)
-
 router.post('/create', controller.postCreate)
+
+router.get('/:id', controller.get)
+
+
 
 module.exports = router
